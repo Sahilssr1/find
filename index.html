@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy To Find - Your Local Guide</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/heroicons/2.0.13/24/solid/css/heroicons.min.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-100 font-sans">
+
+    <nav class="bg-slate-800 shadow-xl sticky top-0 z-40 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-3xl font-extrabold tracking-wider text-white">EasyToFind</a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-2">
+                    <div class="relative dropdown-container">
+                        <button id="hostels-menu-button" class="flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-teal-400 transition-colors duration-300">
+                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                            <span>Hostels</span>
+                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                        </button>
+                        <div id="hostels-dropdown" class="dropdown-menu hidden">
+                            <a href="#" class="dropdown-item">Boys Hostels</a>
+                            <a href="#" class="dropdown-item">Girls Hostels</a>
+                            <a href="#" class="dropdown-item">Co-living Spaces</a>
+                        </div>
+                    </div>
+                    <div class="relative dropdown-container">
+                         <button id="coaching-menu-button" class="flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-teal-400 transition-colors duration-300">
+                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+                            <span>Coaching</span>
+                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                        </button>
+                        <div id="coaching-dropdown" class="dropdown-menu hidden">
+                            <a href="#" class="dropdown-item">IIT-JEE</a>
+                            <a href="#" class="dropdown-item">NEET</a>
+                            <a href="#" class="dropdown-item">UPSC</a>
+                        </div>
+                    </div>
+                    <div class="relative dropdown-container">
+                        <button id="colleges-menu-button" class="flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-teal-400 transition-colors duration-300">
+                           <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5z" /></svg>
+                           <span>Colleges</span>
+                           <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                        </button>
+                        <div id="colleges-dropdown" class="dropdown-menu hidden">
+                            <a href="#" class="dropdown-item">Engineering</a>
+                            <a href="#" class="dropdown-item">Medical</a>
+                            <a href="#" class="dropdown-item">Arts & Science</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <button id="search-toggle-button" aria-label="Open search" class="p-2 rounded-full hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-teal-400 transition-colors duration-300">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    </button>
+
+                    <a href="#" class="hidden md:flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-slate-900 bg-white hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-white transition-colors duration-300">
+                        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                        Login
+                    </a>
+
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                            <span class="sr-only">Open main menu</span>
+                            <svg id="hamburger-icon" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                            <svg id="close-icon" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <div>
+                    <button class="mobile-menu-accordion flex items-center justify-between w-full text-white hover:bg-slate-700 px-3 py-2 rounded-md text-base font-medium">
+                        <div class="flex items-center space-x-2">
+                             <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                            <span>Hostels</span>
+                        </div>
+                        <svg class="w-5 h-5 chevron-icon transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                    </button>
+                    <div class="mobile-submenu hidden pl-8 pt-2 pb-1 space-y-1">
+                        <a href="#" class="block text-slate-300 hover:text-white rounded-md px-3 py-2">Boys Hostels</a>
+                        <a href="#" class="block text-slate-300 hover:text-white rounded-md px-3 py-2">Girls Hostels</a>
+                        <a href="#" class="block text-slate-300 hover:text-white rounded-md px-3 py-2">Co-living Spaces</a>
+                    </div>
+                </div>
+                 <div>
+                    <button class="mobile-menu-accordion flex items-center justify-between w-full text-white hover:bg-slate-700 px-3 py-2 rounded-md text-base font-medium">
+                        <div class="flex items-center space-x-2">
+                           <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+                           <span>Coaching</span>
+                        </div>
+                        <svg class="w-5 h-5 chevron-icon transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                    </button>
+                    <div class="mobile-submenu hidden pl-8 pt-2 pb-1 space-y-1">
+                        <a href="#" class="block text-slate-300 hover:text-white rounded-md px-3 py-2">IIT-JEE</a>
+                        <a href="#" class="block text-slate-300 hover:text-white rounded-md px-3 py-2">NEET</a>
+                        <a href="#" class="block text-slate-300 hover:text-white rounded-md px-3 py-2">UPSC</a>
+                    </div>
+                </div>
+                <div>
+                    <button class="mobile-menu-accordion flex items-center justify-between w-full text-white hover:bg-slate-700 px-3 py-2 rounded-md text-base font-medium">
+                        <div class="flex items-center space-x-2">
+                           <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5z" /></svg>
+                           <span>Colleges</span>
+                        </div>
+                        <svg class="w-5 h-5 chevron-icon transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                    </button>
+                    <div class="mobile-submenu hidden pl-8 pt-2 pb-1 space-y-1">
+                        <a href="#" class="block text-slate-300 hover:text-white rounded-md px-3 py-2">Engineering</a>
+                        <a href="#" class="block text-slate-300 hover:text-white rounded-md px-3 py-2">Medical</a>
+                        <a href="#" class="block text-slate-300 hover:text-white rounded-md px-3 py-2">Arts & Science</a>
+                    </div>
+                </div>
+                 <a href="#" class="flex items-center justify-center mt-4 mx-2 px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-slate-900 bg-white hover:bg-slate-200">
+                    <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                    Login
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <div id="search-overlay" class="hidden fixed inset-0 bg-slate-900 bg-opacity-95 z-50 flex justify-center items-start pt-20 sm:pt-24">
+        <div class="relative w-full max-w-xl px-4">
+            <form action="#" class="relative">
+                <input id="search-input" type="text" placeholder="Hostels, Colleges, Institutes...." class="w-full bg-slate-700 text-white placeholder-slate-400 rounded-full py-4 pl-6 pr-16 text-lg focus:outline-none focus:ring-4 focus:ring-teal-500/50 transition-shadow">
+                <button type="submit" class="absolute inset-y-0 right-0 flex items-center pr-5" aria-label="Submit search">
+                    <svg class="h-6 w-6 text-slate-300 hover:text-teal-400 transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                </button>
+            </form>
+            <button id="close-search-button" aria-label="Close search" class="absolute top-1/2 -right-4 sm:-right-12 -translate-y-1/2 text-white hover:text-teal-400 transition-colors">
+                 <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+        </div>
+    </div>
+
+
+    <header class="slider-container">
+        <div class="slider" id="slider">
+            <div class="slide active">
+                <img src="hostel.jpg" alt="Comfortable and modern hostel accommodation">
+                <div class="slide-content">
+                    <h2 class="slide-title">Find Your Perfect Hostel</h2>
+                    <p class="slide-description">Safe, affordable, and convenient stays for students and professionals.</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="college.jpg" alt="Students walking on a university campus">
+                 <div class="slide-content">
+                    <h2 class="slide-title">Discover Top Colleges</h2>
+                    <p class="slide-description">Explore the best engineering, medical, and arts colleges near you.</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="institute.jpg" alt="A classroom with a teacher and students">
+                 <div class="slide-content">
+                    <h2 class="slide-title">Excel with Expert Coaching</h2>
+                    <p class="slide-description">Get the best guidance for IIT-JEE, NEET, and UPSC examinations.</p>
+                </div>
+            </div>
+        </div>
+        <div class="slider-controls" id="slider-controls">
+            </div>
+    </header>
+
+   <main class="py-12 sm:py-16 lg:py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                
+                <a href="hostels.html" class="block category-card py-8 px-6">
+                    <div class="card-icon bg-teal-100 text-teal-600">
+                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                    </div>
+                    <h3 class="card-title">Hostels</h3>
+                    <span class="card-link">
+                        Explore Stays
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </span>
+                </a>
+
+                <a href="coaching.html" class="block category-card py-8 px-6">
+                    <div class="card-icon bg-sky-100 text-sky-600">
+                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+                    </div>
+                    <h3 class="card-title">Coaching</h3>
+                    <span class="card-link">
+                        Find Institutes
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </span>
+                </a>
+
+                <a href="colleges.html" class="block category-card py-8 px-6">
+                    <div class="card-icon bg-indigo-100 text-indigo-600">
+                       <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5z" /></svg>
+                    </div>
+                    <h3 class="card-title">Colleges</h3>
+                    <span class="card-link">
+                        Discover Colleges
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </span>
+                </a>
+
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
