@@ -68,25 +68,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
             button.addEventListener('click', (event) => {
                 event.stopPropagation();
-                // Check if the menu is already open
                 const isMenuOpen = !menu.classList.contains('hidden');
-                // First, close all dropdowns
                 closeAllDropdowns();
-                // If it wasn't open, open it
                 if (!isMenuOpen) {
                     menu.classList.remove('hidden');
                 }
             });
         });
         
-        // Function to close all dropdowns
         const closeAllDropdowns = () => {
             document.querySelectorAll('.dropdown-menu').forEach(menu => {
                 menu.classList.add('hidden');
             });
         };
 
-        // Close dropdowns when clicking outside
         window.addEventListener('click', (event) => {
             if (!event.target.closest('.dropdown-container')) {
                 closeAllDropdowns();
@@ -95,46 +90,44 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     /**
-     * Handles the search overlay functionality.
+     * Handles the inline search bar in the navbar.
      */
-    const setupSearchOverlay = () => {
+    const setupNavbarSearch = () => {
         const searchToggleButton = document.getElementById('search-toggle-button');
-        const searchOverlay = document.getElementById('search-overlay');
-        const closeSearchButton = document.getElementById('close-search-button');
-        const searchInput = document.getElementById('search-input');
+        const inlineSearchContainer = document.getElementById('inline-search-container');
+        const closeInlineSearchButton = document.getElementById('close-inline-search');
+        const searchInput = document.getElementById('inline-search-input');
         
-        if (!searchOverlay) return;
+        if (!searchToggleButton || !inlineSearchContainer || !closeInlineSearchButton) return;
 
         const openSearch = () => {
-            searchOverlay.classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
-            setTimeout(() => searchInput.focus(), 50); // Delay focus slightly
+            inlineSearchContainer.classList.remove('hidden');
+            inlineSearchContainer.classList.add('flex');
+            setTimeout(() => searchInput.focus(), 50);
         };
 
         const closeSearch = () => {
-            searchOverlay.classList.add('hidden');
-            document.body.style.overflow = ''; // Restore scrolling
+            inlineSearchContainer.classList.add('hidden');
+            inlineSearchContainer.classList.remove('flex');
         };
-        
-        searchToggleButton.addEventListener('click', openSearch);
-        closeSearchButton.addEventListener('click', closeSearch);
-        
-        searchOverlay.addEventListener('click', (event) => {
-            if (event.target === searchOverlay) closeSearch();
-        });
 
+        searchToggleButton.addEventListener('click', openSearch);
+        closeInlineSearchButton.addEventListener('click', closeSearch);
+        
         document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && !searchOverlay.classList.contains('hidden')) {
+            if (event.key === 'Escape' && !inlineSearchContainer.classList.contains('hidden')) {
                 closeSearch();
             }
         });
     };
+
 
     /**
      * Handles the main image slider/carousel.
      */
     const setupSlider = () => {
         const slider = document.getElementById('slider');
+        if (!slider) return;
         const slides = slider.querySelectorAll('.slide');
         const controlsContainer = document.getElementById('slider-controls');
         if (!slides.length) return;
@@ -157,8 +150,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const dots = controlsContainer.querySelectorAll('.slider-dot');
 
         const goToSlide = (slideIndex) => {
-            slides[currentSlide].classList.remove('active');
-            dots[currentSlide].classList.remove('active');
+            if (slides[currentSlide]) {
+                slides[currentSlide].classList.remove('active');
+                dots[currentSlide].classList.remove('active');
+            }
             
             currentSlide = (slideIndex + slides.length) % slides.length;
             
@@ -185,11 +180,12 @@ document.addEventListener('DOMContentLoaded', function () {
         slider.addEventListener('mouseleave', startInterval);
 
         // Initialize slider
-        slides[0].classList.add('active');
-        dots[0].classList.add('active');
-        // A single-slide slider does not need auto-play
-        if (slides.length > 1) {
-             startInterval();
+        if (slides.length > 0) {
+            slides[0].classList.add('active');
+            dots[0].classList.add('active');
+            if (slides.length > 1) {
+                startInterval();
+            }
         }
     };
 
@@ -197,6 +193,6 @@ document.addEventListener('DOMContentLoaded', function () {
     setupMobileMenu();
     setupMobileAccordion();
     setupDesktopDropdowns();
-    setupSearchOverlay();
+    setupNavbarSearch();
     setupSlider();
 });
