@@ -17,14 +17,17 @@
 </head>
 <body class="bg-slate-100 font-sans">
 
+    <!-- Navigation Bar -->
     <nav class="bg-slate-800 shadow-xl sticky top-0 z-40 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <!-- Main Nav Content -->
             <div class="flex items-center justify-between h-20">
 
                 <div class="flex-shrink-0">
                     <a href="#" class="text-3xl font-extrabold tracking-wider text-white">EasyToFind</a>
                 </div>
 
+                <!-- Desktop Menu Links -->
                 <div class="hidden md:flex items-center space-x-2">
                     <div class="relative dropdown-container">
                         <button id="hostels-menu-button" class="flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-teal-400 transition-colors duration-300">
@@ -64,6 +67,7 @@
                     </div>
                 </div>
                 
+                <!-- Right side icons and buttons -->
                 <div class="flex items-center space-x-2 sm:space-x-4">
                     <button id="search-toggle-button" aria-label="Open search" class="p-2 rounded-full hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-teal-400 transition-colors duration-300">
                         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
@@ -74,6 +78,7 @@
                         Login
                     </a>
 
+                    <!-- Mobile Menu Button -->
                     <div class="md:hidden flex items-center">
                         <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
                             <span class="sr-only">Open main menu</span>
@@ -83,8 +88,22 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Inline Search Bar (hidden by default) -->
+            <div id="inline-search-container" class="absolute top-0 left-0 w-full h-full bg-slate-800 px-4 hidden items-center z-20">
+                <form action="#" class="w-full relative">
+                    <input id="inline-search-input" type="text" placeholder="Search for Hostels, Colleges..." class="w-full bg-slate-700 text-white placeholder-slate-400 rounded-full py-2 pl-5 pr-12 text-base focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <button type="submit" class="absolute inset-y-0 right-0 flex items-center pr-4" aria-label="Submit search">
+                        <svg class="h-5 w-5 text-slate-300 hover:text-teal-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    </button>
+                </form>
+                <button id="close-inline-search" class="text-white ml-3 p-2 rounded-full hover:bg-slate-700" aria-label="Close search">
+                     <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
         </div>
 
+        <!-- Mobile Menu (hidden by default) -->
         <div id="mobile-menu" class="md:hidden hidden">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <div>
@@ -137,53 +156,46 @@
         </div>
     </nav>
     
-    <div id="search-overlay" class="hidden fixed inset-0 bg-slate-900 bg-opacity-95 z-50 flex justify-center items-start pt-20 sm:pt-24">
-        <div class="relative w-full max-w-xl px-4">
-            <form action="#" class="relative">
-                <input id="search-input" type="text" placeholder="Hostels, Colleges, Institutes...." class="w-full bg-slate-700 text-white placeholder-slate-400 rounded-full py-4 pl-6 pr-16 text-lg focus:outline-none focus:ring-4 focus:ring-teal-500/50 transition-shadow">
-                <button type="submit" class="absolute inset-y-0 right-0 flex items-center pr-5" aria-label="Submit search">
-                    <svg class="h-6 w-6 text-slate-300 hover:text-teal-400 transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                </button>
-            </form>
-            <button id="close-search-button" aria-label="Close search" class="absolute top-1/2 -right-4 sm:-right-12 -translate-y-1/2 text-white hover:text-teal-400 transition-colors">
-                 <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
-        </div>
-    </div>
-
-
+    <!-- Image Slider -->
     <header class="slider-container">
         <div class="slider" id="slider">
             <div class="slide active">
-                <img src="hostel.jpg" alt="Comfortable and modern hostel accommodation">
+                <img src="hostel.jpg" 
+                     onerror="this.onerror=null;this.src='https://placehold.co/1200x600/334155/E2E8F0?text=Image+Not+Found';"
+                     alt="Comfortable and modern hostel accommodation">
                 <div class="slide-content">
                     <h2 class="slide-title">Find Your Perfect Hostel</h2>
                     <p class="slide-description">Safe, affordable, and convenient stays for students and professionals.</p>
                 </div>
             </div>
             <div class="slide">
-                <img src="college.jpg" alt="Students walking on a university campus">
+                <img src="college.jpg" 
+                     onerror="this.onerror=null;this.src='https://placehold.co/1200x600/0F766E/E2E8F0?text=Image+Not+Found';"
+                     alt="Students walking on a university campus">
                  <div class="slide-content">
                     <h2 class="slide-title">Discover Top Colleges</h2>
                     <p class="slide-description">Explore the best engineering, medical, and arts colleges near you.</p>
                 </div>
             </div>
             <div class="slide">
-                <img src="institute.jpg" alt="A classroom with a teacher and students">
+                <img src="institute.jpg" 
+                     onerror="this.onerror=null;this.src='https://placehold.co/1200x600/4F46E5/E2E8F0?text=Image+Not+Found';"
+                     alt="A classroom with a teacher and students">
                  <div class="slide-content">
                     <h2 class="slide-title">Excel with Expert Coaching</h2>
                     <p class="slide-description">Get the best guidance for IIT-JEE, NEET, and UPSC examinations.</p>
                 </div>
             </div>
         </div>
-        <div class="slider-controls" id="slider-controls">
-            </div>
+        <div class="slider-controls" id="slider-controls"></div>
     </header>
 
+    <!-- Main Content: Category Cards -->
    <main class="py-12 sm:py-16 lg:py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                
+       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- This container handles the horizontal scroll on mobile and grid on desktop -->
+           <div class="category-container">
+               
                 <a href="hostels.html" class="block category-card py-8 px-6">
                     <div class="card-icon bg-teal-100 text-teal-600">
                         <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
@@ -217,9 +229,9 @@
                     </span>
                 </a>
 
-            </div>
-        </div>
-    </main>
-    <script src="script.js"></script>
+           </div>
+       </div>
+   </main>
+   <script src="script.js"></script>
 </body>
 </html>
