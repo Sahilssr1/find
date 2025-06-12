@@ -5,9 +5,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* --- DESKTOP DROPDOWN STYLES --- 
-  This section styles the dropdown menus for the desktop navigation.
-*/
+/* --- DESKTOP DROPDOWN STYLES --- */
 .dropdown-menu {
     position: absolute;
     right: 0;
@@ -23,7 +21,6 @@ body {
     transition: opacity 0.2s ease-out, transform 0.2s ease-out;
 }
 
-/* A helper class to apply styles to each dropdown link */
 .dropdown-item {
     display: block;
     padding: 0.5rem 1rem; /* px-4 py-2 */
@@ -36,17 +33,13 @@ body {
     color: #111827; /* hover:text-gray-900 */
 }
 
-/* Styles for when the dropdown is hidden */
 .dropdown-menu.hidden {
     opacity: 0;
     transform: scale(0.95);
     pointer-events: none;
 }
 
-/*
-  --- MOBILE MENU ACCORDION ---
-  This section manages the smooth opening/closing of submenus in the mobile view.
-*/
+/* --- MOBILE MENU ACCORDION --- */
 .mobile-submenu {
     max-height: 0;
     overflow: hidden;
@@ -59,30 +52,36 @@ body {
     transform: rotate(180deg);
 }
 
-
-/* --- SLIDER SECTION STYLES ---
-  This section styles the main image slider on the homepage.
-*/
+/* --- SLIDER SECTION STYLES --- */
 .slider-container {
     position: relative;
     width: 100%;
-    /* A responsive height for the slider */
-    height: 60vh; 
-    max-height: 600px;
-    min-height: 350px;
+    /* Mobile-first height for the slider */
+    height: 45vh; 
+    min-height: 280px;
+    max-height: 400px;
     overflow: hidden;
     background-color: #1E293B; /* Fallback color */
 }
 
+/* Larger height for slider on desktop */
+@media (min-width: 640px) { /* sm */
+    .slider-container {
+        height: 60vh;
+        max-height: 600px;
+        min-height: 350px;
+    }
+}
+
 .slider {
     display: flex;
-    width: 100%; /* JS will handle the width based on slide count */
+    width: 100%;
     height: 100%;
     transition: transform 0.7s cubic-bezier(0.45, 0.05, 0.55, 0.95);
 }
 
 .slide {
-    width: 100%; /* Each slide takes the full width */
+    width: 100%;
     flex-shrink: 0;
     position: relative;
     opacity: 0;
@@ -100,7 +99,6 @@ body {
     object-position: center;
 }
 
-/* Dark overlay for better text readability on slider images */
 .slide::after {
     content: '';
     position: absolute;
@@ -132,14 +130,14 @@ body {
 }
 
 .slide-title {
-    font-size: 2.25rem; /* text-4xl */
+    font-size: 2rem; /* Adjusted for mobile */
     font-weight: 800; /* font-extrabold */
     text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
 }
 
 .slide-description {
-    margin-top: 1rem;
-    font-size: 1.125rem; /* text-lg */
+    margin-top: 0.75rem; /* mt-3 */
+    font-size: 1rem; /* Adjusted for mobile */
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
@@ -156,6 +154,7 @@ body {
         font-size: 3rem; /* text-5xl */
     }
     .slide-description {
+       font-size: 1.125rem; /* text-lg */
        margin-left: 0;
        margin-right: 0;
     }
@@ -186,9 +185,51 @@ body {
     transform: scale(1.1);
 }
 
-/* --- FEATURED CATEGORY CARD STYLES --- 
-  This section styles the cards in the "Explore Our Categories" section.
-*/
+/* --- CATEGORY CARDS: SCROLLER & GRID --- */
+
+/* Mobile First: Horizontal scroller */
+.category-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem; /* gap between cards */
+    padding-bottom: 1rem; /* space for scrollbar if visible */
+    scroll-snap-type: x mandatory; /* Snapping effect */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.category-container::-webkit-scrollbar {
+    display: none;
+}
+
+.category-container > .category-card {
+    flex: 0 0 85%; /* Each card takes 85% of the viewport width */
+    scroll-snap-align: start; /* Snap to the start of the card */
+}
+
+/* Tablet styles: Switch to 2-column grid */
+@media (min-width: 640px) { /* sm */
+    .category-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        overflow-x: visible; /* disable horizontal scroll */
+        gap: 2rem;
+    }
+    .category-container > .category-card {
+       flex: auto; /* Reset flex properties */
+    }
+}
+
+/* Desktop styles: Switch to 3-column grid */
+@media (min-width: 1024px) { /* lg */
+    .category-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+/* --- INDIVIDUAL CARD STYLES --- */
 .category-card {
     background-color: white;
     border-radius: 0.75rem; /* rounded-lg */
@@ -214,11 +255,6 @@ body {
     font-size: 1.25rem; /* text-xl */
     font-weight: 700; /* font-bold */
     color: #111827; /* text-gray-900 */
-}
-.card-description {
-    margin-top: 0.5rem; /* mt-2 */
-    color: #4B5563; /* text-gray-600 */
-    line-height: 1.6;
 }
 .card-link {
     display: inline-flex;
