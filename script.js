@@ -195,4 +195,53 @@ document.addEventListener('DOMContentLoaded', function () {
     setupDesktopDropdowns();
     setupNavbarSearch();
     setupSlider();
+    setupCategoryScroller(); 
 });
+
+/**
+ * Handles the automatic scrolling for the category cards on mobile.
+ */
+const setupCategoryScroller = () => {
+    const container = document.querySelector('.category-container');
+    // Exit if the container element doesn't exist
+    if (!container) return;
+
+    const cards = container.querySelectorAll('.category-card');
+    // Exit if there's nothing to scroll
+    if (cards.length <= 1) return;
+
+    let currentIndex = 0;
+    let autoScrollInterval;
+
+    const startAutoScroll = () => {
+        // Stop any previous scrolling
+        clearInterval(autoScrollInterval);
+
+        // Set an interval to scroll every 2 seconds
+        autoScrollInterval = setInterval(() => {
+            // This check ensures scrolling only happens when the view is mobile (i.e., horizontal)
+            const isScrollable = container.scrollWidth > container.clientWidth;
+
+            if (isScrollable) {
+                // Move to the next card, and loop back to the start if at the end
+                currentIndex = (currentIndex + 1) % cards.length;
+                
+                const nextCard = cards[currentIndex];
+
+                // Smoothly scroll the container to the next card's position
+                container.scrollTo({
+                    left: nextCard.offsetLeft,
+                    behavior: 'smooth'
+                });
+            }
+        }, 2000); // 2000 milliseconds = 2 seconds
+    };
+
+    // Start the automatic scrolling
+    startAutoScroll();
+
+    // Optional but recommended: Pause scrolling when the user's mouse is over the container
+    container.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
+    // Resume scrolling when the mouse leaves
+    container.addEventListener('mouseleave', startAutoScroll);
+};
