@@ -323,6 +323,154 @@ const setupHorizontalScrollers = () => {
 // Make sure this function call is inside your DOMContentLoaded listener
 setupHorizontalScrollers();
 
+    /**
+ * Fetches blog posts and user data from a placeholder API and displays them.
+ */
+const fetchAndDisplayBlogPosts = async () => {
+    const grid = document.getElementById('blog-posts-grid');
+    const loader = document.getElementById('blog-loader');
+    const errorMessage = document.getElementById('blog-error-message');
+    
+    // API endpoints for placeholder data
+    const postsUrl = 'https://jsonplaceholder.typicode.com/posts';
+    const usersUrl = 'https://jsonplaceholder.typicode.com/users';
+
+    try {
+        // Fetch posts and users data in parallel
+        const [postsResponse, usersResponse] = await Promise.all([
+            fetch(postsUrl),
+            fetch(usersUrl)
+        ]);
+
+        if (!postsResponse.ok || !usersResponse.ok) {
+            throw new Error('Network response was not ok.');
+        }
+
+        const posts = await postsResponse.json();
+        const users = await usersResponse.json();
+
+        // Create a map of users by their ID for easy lookup
+        const usersMap = new Map(users.map(user => [user.id, user.name]));
+        
+        // Mock categories and colors
+        const categories = [
+            { name: 'Student Guides', color: 'teal' },
+            { name: 'Accommodation', color: 'indigo' },
+            { name: 'Exam Prep', color: 'amber' },
+            { name: 'City Life', color: 'sky' }
+        ];
+
+        // We'll only show the first 6 posts for this demo
+        const postsToDisplay = posts.slice(0, 6);
+
+        postsToDisplay.forEach((post, index) => {
+            const authorName = usersMap.get(post.userId) || 'Anonymous';
+            const category = categories[index % categories.length];
+            const readTime = Math.floor(post.body.length / 1500) + 3; // Estimate read time
+            const postDate = new Date();
+            postDate.setDate(postDate.getDate() - (index * 3)); // Simulate different post dates
+
+            const postCardHTML = `
+                <article class="blog-card">
+                    <div class="flex-shrink-0">
+                        <img class="h-48 w-full object-cover" src="https://placehold.co/600x400/${category.color}-100/${category.color}-800?text=${category.name.replace(' ', '+')}" alt="Blog post image">
+                    </div>
+                    <div class="flex flex-1 flex-col justify-between bg-white p-6">
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-${category.color}-600">
+                                <a href="#" class="hover:underline">${category.name}</a>
+                            </p>
+                            <a href="#" class="mt-2 block">
+                                <p class="text-xl font-semibold text-slate-900 capitalize">${post.title.substring(0, 50)}</p>
+                                <p class="mt-3 text-base text-slate-500">${post.body.substring(0, 120)}...</p>
+                            </a>
+                        </div>
+                        <div class="mt-6 flex items-center">
+                            <div class="flex-shrink-0">
+                                <a href="#">
+                                    <span class="sr-only">${authorName}</span>
+                                    <img class="h-10 w-10 rounded-full bg-gray-200" src="https://placehold.co/40x40/cbd5e1/475569?text=${authorName.charAt(0)}" alt="Author avatar">
+                                </a>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-slate-900">
+                                    <a href="#" class="hover:underline">${authorName}</a>
+                                </p>
+                                <div class="flex space-x-1 text-sm text-slate-500">
+                                    <time datetime="${postDate.toISOString().split('T')[0]}">${postDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
+                                    <span aria-hidden="true">&middot;</span>
+                                    <span>${readTime} min read</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            `;
+            grid.innerHTML += postCardHTML;
+        });
+
+        // Hide loader and show grid
+        loader.classList.add('hidden');
+        grid.classList.remove('hidden');
+
+    } catch (error) {
+        console.error('Failed to fetch blog posts:', error);
+        // Hide loader and show error message
+        loader.classList.add('hidden');
+        errorMessage.classList.remove('hidden');
+    }
+};
+
+// Call the function to fetch and display the blog posts
+fetchAndDisplayBlogPosts();
+
+/**
+ * Handles the accordion functionality for the FAQ section.
+ */
+const setupFaqAccordion = () => {
+    const accordionContainer = document.getElementById('faq-accordion-container');
+    if (!accordionContainer) return;
+
+    const faqItems = accordionContainer.querySelectorAll('.faq-item');
+
+    faqItems.forEach(item => {
+        const button = item.querySelector('.faq-question-button');
+        const answer = item.querySelector('.faq-answer');
+        const chevron = item.querySelector('.faq-chevron');
+
+        button.addEventListener('click', () => {
+            const isOpening = answer.classList.contains('hidden');
+
+            // Close all other open items first
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.querySelector('.faq-answer').classList.add('hidden');
+                    otherItem.querySelector('.faq-answer').style.maxHeight = null;
+                    otherItem.querySelector('.faq-chevron').classList.remove('faq-chevron-rotated');
+                }
+            });
+
+            // Toggle the clicked item
+            if (isOpening) {
+                answer.classList.remove('hidden');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+                chevron.classList.add('faq-chevron-rotated');
+            } else {
+                answer.style.maxHeight = null;
+                // Add a listener to hide it after the transition completes
+                answer.addEventListener('transitionend', () => {
+                    answer.classList.add('hidden');
+                }, { once: true });
+                chevron.classList.remove('faq-chevron-rotated');
+            }
+        });
+    });
+};
+
+// Call the new function to initialize the FAQ section
+setupFaqAccordion();
+
+
     // Initialize all components
     setupMobileMenu();
     setupMobileAccordion();
