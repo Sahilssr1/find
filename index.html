@@ -444,6 +444,116 @@
             </div>
         </div>
     </section>
+
+     <!-- Blog Section -->
+<section class="bg-white py-12 sm:py-16 lg:py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center">
+            <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">From Our Blog</h2>
+            <p class="mt-4 text-lg leading-8 text-slate-600">
+                Get the latest tips, guides, and stories for student life in Patna.
+            </p>
+        </div>
+
+        <!-- This div will contain either the loading spinner or the blog posts -->
+        <div id="blog-content-area" class="mx-auto mt-12">
+            <!-- Loading Spinner -->
+            <div id="blog-loader" class="flex justify-center items-center h-40">
+                <div class="loader"></div>
+            </div>
+
+            <!-- Blog Posts Grid (Populated by JavaScript) -->
+            <div id="blog-posts-grid" class="hidden grid max-w-lg gap-8 lg:max-w-none lg:grid-cols-3 md:grid-cols-2">
+                <!-- Blog post cards will be inserted here -->
+            </div>
+            
+             <!-- Error Message -->
+            <div id="blog-error-message" class="hidden text-center text-red-500 font-semibold">
+                <p>Oops! Could not load blog posts. Please try again later.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="bg-slate-50 py-12 sm:py-16 lg:py-20">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center">
+            <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Frequently Asked Questions</h2>
+            <p class="mt-4 text-lg leading-8 text-slate-600">
+                Have questions? We've got answers. Here are some common queries.
+            </p>
+        </div>
+
+        <!-- Accordion Container -->
+        <div id="faq-accordion-container" class="mt-12 space-y-4">
+            
+            <!-- FAQ Item 1 -->
+            <div class="faq-item rounded-lg bg-white p-6 shadow-sm">
+                <h3>
+                    <button class="faq-question-button flex w-full items-center justify-between text-left text-lg font-semibold text-slate-800">
+                        <span>What is the average monthly cost for a decent hostel in Patna?</span>
+                        <svg class="faq-chevron h-6 w-6 shrink-0 transition-transform duration-200 ease-in-out" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </button>
+                </h3>
+                <div class="faq-answer hidden pt-4 text-base leading-7 text-slate-600">
+                    <p>The average cost for a decent single-room hostel in prime locations like Boring Road or Kankarbagh ranges from ₹6,000 to ₹8,500 per month. This usually includes basic amenities like mess food (twice a day), Wi-Fi, and electricity. Shared rooms are more affordable, typically starting from ₹4,500.</p>
+                </div>
+            </div>
+
+            <!-- FAQ Item 2 -->
+            <div class="faq-item rounded-lg bg-white p-6 shadow-sm">
+                <h3>
+                    <button class="faq-question-button flex w-full items-center justify-between text-left text-lg font-semibold text-slate-800">
+                        <span>Which coaching institute is best for IIT-JEE preparation?</span>
+                        <svg class="faq-chevron h-6 w-6 shrink-0 transition-transform duration-200 ease-in-out" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </button>
+                </h3>
+                <div class="faq-answer hidden pt-4 text-base leading-7 text-slate-600">
+                    <p>Several institutes in Patna have excellent track records for IIT-JEE, including FIITJEE, Aakash Institute, and Allen Career Institute. The "best" one often depends on individual learning styles, faculty experience, and study materials. We recommend visiting the centers, attending a demo class if possible, and speaking to current students before making a decision.</p>
+                </div>
+            </div>
+            
+            <!-- FAQ Item 3 -->
+            <div class="faq-item rounded-lg bg-white p-6 shadow-sm">
+                <h3>
+                    <button class="faq-question-button flex w-full items-center justify-between text-left text-lg font-semibold text-slate-800">
+                        <span>Are co-living spaces a better option than traditional hostels?</span>
+                        <svg class="faq-chevron h-6 w-6 shrink-0 transition-transform duration-200 ease-in-out" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </button>
+                </h3>
+                <div class="faq-answer hidden pt-4 text-base leading-7 text-slate-600">
+                    <p>Co-living spaces offer more flexibility, modern amenities (like gyms, recreation areas), and a stronger community focus, but they are often more expensive. Traditional hostels are more budget-friendly and cater specifically to student needs like fixed meal times. Your choice depends on your budget and lifestyle preferences.</p>
+                </div>
+            </div>
+
+            <!-- FAQ Item 4 -->
+            <div class="faq-item rounded-lg bg-white p-6 shadow-sm">
+                <h3>
+                    <button class="faq-question-button flex w-full items-center justify-between text-left text-lg font-semibold text-slate-800">
+                        <span>How do I get admission into Patna University?</span>
+                        <svg class="faq-chevron h-6 w-6 shrink-0 transition-transform duration-200 ease-in-out" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </button>
+                </h3>
+                <div class="faq-answer hidden pt-4 text-base leading-7 text-slate-600">
+                    <p>Admission to most undergraduate courses at Patna University is based on the marks obtained in the Class 12th board examinations, followed by a counseling process. For some professional courses and postgraduate degrees, the university conducts its own entrance exams (PUCET). Always check the official Patna University website for the latest admission notices and procedures.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
    <script src="script.js"></script>
 </body>
 </html>
