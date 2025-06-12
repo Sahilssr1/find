@@ -57,7 +57,7 @@ body {
     position: relative;
     width: 100%;
     /* Mobile-first height for the slider */
-    height: 30vh; 
+    height: 25vh; 
     min-height: 280px;
     max-height: 400px;
     overflow: hidden;
