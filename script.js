@@ -189,17 +189,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    // Initialize all components
-    setupMobileMenu();
-    setupMobileAccordion();
-    setupDesktopDropdowns();
-    setupNavbarSearch();
-    setupSlider();
-    setupCategoryScroller(); 
-});
-
-/**
+    /**
  * Handles the automatic scrolling for the category cards on mobile.
+ hostel , college institute
  */
 const setupCategoryScroller = () => {
     const container = document.querySelector('.category-container');
@@ -245,3 +237,98 @@ const setupCategoryScroller = () => {
     // Resume scrolling when the mouse leaves
     container.addEventListener('mouseleave', startAutoScroll);
 };
+
+    /**
+ * Sets up horizontal scrolling with arrow buttons and mobile auto-scroll.
+ */
+const setupHorizontalScrollers = () => {
+    const scrollers = document.querySelectorAll('.horizontal-scroll-container');
+    if (scrollers.length === 0) return;
+
+    // Use an object to store the interval timers for each scroller
+    const autoScrollIntervals = {};
+
+    scrollers.forEach(scroller => {
+        const containerId = scroller.id;
+        const leftArrow = document.querySelector(`.scroll-arrow.left-arrow[data-container="${containerId}"]`);
+        const rightArrow = document.querySelector(`.scroll-arrow.right-arrow[data-container="${containerId}"]`);
+        const cards = scroller.querySelectorAll('.hostel-card, .entity-card');
+        let currentIndex = 0;
+
+        // --- Manual scrolling with arrows (for desktop) ---
+        if (leftArrow && rightArrow) {
+            leftArrow.addEventListener('click', () => {
+                const scrollAmount = scroller.clientWidth * -0.8;
+                scroller.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            });
+
+            rightArrow.addEventListener('click', () => {
+                const scrollAmount = scroller.clientWidth * 0.8;
+                scroller.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            });
+        }
+        
+        // --- Automatic scrolling function for mobile ---
+        const startAutoScroll = () => {
+             // Use matchMedia to check if the view is mobile (arrows are not displayed)
+            const isMobile = window.matchMedia('(max-width: 1023px)').matches;
+            if (!isMobile || cards.length <= 1) return; // Exit if not mobile or not enough cards
+
+            // Clear any previously running interval for this scroller
+            clearInterval(autoScrollIntervals[containerId]); 
+            
+            autoScrollIntervals[containerId] = setInterval(() => {
+                // Move to the next card index
+                currentIndex = (currentIndex + 1) % cards.length;
+                
+                const nextCard = cards[currentIndex];
+                
+                // If we've looped back to the first card, scroll instantly to the start
+                if (currentIndex === 0) {
+                    scroller.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    // Otherwise, scroll to the next card's position
+                    scroller.scrollTo({
+                        left: nextCard.offsetLeft - 24, // Adjust for the gap
+                        behavior: 'smooth'
+                    });
+                }
+            }, 3500); // Change slide every 3.5 seconds
+        };
+        
+        const stopAutoScroll = () => {
+            clearInterval(autoScrollIntervals[containerId]);
+        };
+
+        // --- Event Listeners to manage auto-scroll ---
+        // Start the automatic scrolling when the page loads
+        startAutoScroll();
+
+        // Pause the scrolling when the user touches or hovers over the container
+        scroller.addEventListener('touchstart', stopAutoScroll, { passive: true });
+        scroller.addEventListener('mouseenter', stopAutoScroll);
+
+        // Resume scrolling after a delay when the user stops interacting
+        scroller.addEventListener('touchend', () => setTimeout(startAutoScroll, 5000)); // 5-second delay after touch
+        scroller.addEventListener('mouseleave', startAutoScroll);
+
+        // Re-evaluate whether to auto-scroll when the window is resized
+        window.addEventListener('resize', () => {
+            stopAutoScroll();
+            startAutoScroll();
+        });
+    });
+};
+
+// Make sure this function call is inside your DOMContentLoaded listener
+setupHorizontalScrollers();
+
+    // Initialize all components
+    setupMobileMenu();
+    setupMobileAccordion();
+    setupDesktopDropdowns();
+    setupNavbarSearch();
+    setupSlider();
+    setupCategoryScroller(); 
+});
+
