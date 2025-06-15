@@ -185,49 +185,25 @@ body {
     transform: scale(1.1);
 }
 
-/* --- CATEGORY CARDS: SCROLLER & GRID --- */
-
-/* Mobile First: Horizontal scroller */
+/* --- CATEGORY CARDS: GRID LAYOUT FOR ALL SCREENS (MODIFIED) --- */
 .category-container {
-    display: flex;
-    overflow-x: auto;
-    gap: 1rem; /* gap between cards */
-    padding-bottom: 1rem; /* space for scrollbar if visible */
-    scroll-snap-type: x mandatory; /* Snapping effect */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns on all screens */
+  gap: 1rem; /* Default gap for mobile */
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.category-container::-webkit-scrollbar {
-    display: none;
-}
-
-.category-container > .category-card {
-    flex: 0 0 85%; /* Each card takes 85% of the viewport width */
-    scroll-snap-align: start; /* Snap to the start of the card */
-}
-
-/* Tablet styles: Switch to 2-column grid */
-@media (min-width: 640px) { /* sm */
+/* Increase the gap on larger screens */
+@media (min-width: 640px) {
     .category-container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        overflow-x: visible; /* disable horizontal scroll */
+        gap: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .category-container {
         gap: 2rem;
     }
-    .category-container > .category-card {
-       flex: auto; /* Reset flex properties */
-    }
 }
-
-/* Desktop styles: Switch to 3-column grid */
-@media (min-width: 1024px) { /* lg */
-    .category-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
 
 /* --- INDIVIDUAL CARD STYLES --- */
 .category-card {
@@ -267,6 +243,8 @@ body {
 .card-link:hover {
     color: #0f766e; /* hover:text-teal-700 */
 }
+
+
 /* --- HORIZONTAL SCROLL SECTIONS --- */
 .horizontal-scroll-container {
     scroll-padding: 0 1rem; /* Ensures cards don't snap right up against the edge */
@@ -361,6 +339,7 @@ body {
         justify-content: center;
     }
 }
+
 /* --- BLOG SECTION STYLES --- */
 .blog-card {
     display: flex;
