@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    
+
     /**
      * Handles the main mobile menu toggle (hamburger to close icon).
      */
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const hamburgerIcon = document.getElementById('hamburger-icon');
         const closeIcon = document.getElementById('close-icon');
 
-        if (!mobileMenuButton) return;
+        if (!mobileMenuButton || !mobileMenu || !hamburgerIcon || !closeIcon) return;
 
         mobileMenuButton.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
@@ -30,23 +30,27 @@ document.addEventListener('DOMContentLoaded', function () {
             accordion.addEventListener('click', () => {
                 const submenu = accordion.nextElementSibling;
                 const chevron = accordion.querySelector('.chevron-icon');
+                if (!submenu || !chevron) return;
 
-                // Close other open submenus
+                const isHidden = submenu.classList.contains('hidden');
+
+                // Close all other accordions first
                 accordions.forEach(otherAccordion => {
                     if (otherAccordion !== accordion) {
                         const otherSubmenu = otherAccordion.nextElementSibling;
+                        const otherChevron = otherAccordion.querySelector('.chevron-icon');
                         if (otherSubmenu && !otherSubmenu.classList.contains('hidden')) {
                             otherSubmenu.classList.add('hidden');
                             otherSubmenu.style.maxHeight = null;
-                            otherAccordion.querySelector('.chevron-icon').classList.remove('rotate-180');
+                            otherChevron.classList.remove('rotate-180');
                         }
                     }
                 });
                 
-                // Toggle current submenu
-                submenu.classList.toggle('hidden');
-                chevron.classList.toggle('rotate-180');
-                if (!submenu.classList.contains('hidden')) {
+                // Toggle the current accordion
+                submenu.classList.toggle('hidden', !isHidden);
+                chevron.classList.toggle('rotate-180', isHidden);
+                if (isHidden) {
                     submenu.style.maxHeight = submenu.scrollHeight + "px";
                 } else {
                     submenu.style.maxHeight = null;
@@ -60,6 +64,12 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     const setupDesktopDropdowns = () => {
         const dropdownContainers = document.querySelectorAll('.dropdown-container');
+
+        const closeAllDropdowns = () => {
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.add('hidden');
+            });
+        };
 
         dropdownContainers.forEach(container => {
             const button = container.querySelector('button');
@@ -75,12 +85,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         });
-        
-        const closeAllDropdowns = () => {
-            document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                menu.classList.add('hidden');
-            });
-        };
 
         window.addEventListener('click', (event) => {
             if (!event.target.closest('.dropdown-container')) {
@@ -121,21 +125,19 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     };
 
-
     /**
-     * Handles the main image slider/carousel.
+     * Handles the main hero image slider/carousel.
      */
     const setupSlider = () => {
         const slider = document.getElementById('slider');
         if (!slider) return;
         const slides = slider.querySelectorAll('.slide');
         const controlsContainer = document.getElementById('slider-controls');
-        if (!slides.length) return;
+        if (!slides.length || !controlsContainer) return;
 
         let currentSlide = 0;
         let slideInterval;
 
-        // Create navigation dots
         slides.forEach((_, index) => {
             const dot = document.createElement('button');
             dot.classList.add('slider-dot');
@@ -150,286 +152,216 @@ document.addEventListener('DOMContentLoaded', function () {
         const dots = controlsContainer.querySelectorAll('.slider-dot');
 
         const goToSlide = (slideIndex) => {
-            if (slides[currentSlide]) {
-                slides[currentSlide].classList.remove('active');
-                dots[currentSlide].classList.remove('active');
-            }
-            
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
             currentSlide = (slideIndex + slides.length) % slides.length;
-            
             slider.style.transform = `translateX(-${currentSlide * 100}%)`;
             slides[currentSlide].classList.add('active');
             dots[currentSlide].classList.add('active');
         };
 
-        const nextSlide = () => {
-            goToSlide(currentSlide + 1);
-        };
-
-        const startInterval = () => {
-            slideInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
-        };
-        
+        const nextSlide = () => goToSlide(currentSlide + 1);
+        const startInterval = () => slideInterval = setInterval(nextSlide, 5000);
         const resetInterval = () => {
             clearInterval(slideInterval);
             startInterval();
         };
 
-        // Pause on hover
         slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
         slider.addEventListener('mouseleave', startInterval);
 
-        // Initialize slider
         if (slides.length > 0) {
-            slides[0].classList.add('active');
-            dots[0].classList.add('active');
+            goToSlide(0); // Set initial state correctly
             if (slides.length > 1) {
                 startInterval();
             }
         }
     };
 
+    /**
+     * Sets up horizontal scrolling containers with arrow buttons and mobile auto-scroll.
+     */
+    const setupHorizontalScrollers = () => {
+        const scrollers = document.querySelectorAll('.horizontal-scroll-container');
+        if (scrollers.length === 0) return;
+        const autoScrollIntervals = {};
 
-/**
- * Sets up horizontal scrolling with arrow buttons and mobile auto-scroll.
- */
-const setupHorizontalScrollers = () => {
-    const scrollers = document.querySelectorAll('.horizontal-scroll-container');
-    if (scrollers.length === 0) return;
+        scrollers.forEach(scroller => {
+            const containerId = scroller.id;
+            if (!containerId) return; // Skip if scroller has no ID
 
-    // Use an object to store the interval timers for each scroller
-    const autoScrollIntervals = {};
-
-    scrollers.forEach(scroller => {
-        const containerId = scroller.id;
-        const leftArrow = document.querySelector(`.scroll-arrow.left-arrow[data-container="${containerId}"]`);
-        const rightArrow = document.querySelector(`.scroll-arrow.right-arrow[data-container="${containerId}"]`);
-        const cards = scroller.querySelectorAll('.hostel-card, .entity-card');
-        let currentIndex = 0;
-
-        // --- Manual scrolling with arrows (for desktop) ---
-        if (leftArrow && rightArrow) {
-            leftArrow.addEventListener('click', () => {
-                const scrollAmount = scroller.clientWidth * -0.8;
-                scroller.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            });
-
-            rightArrow.addEventListener('click', () => {
-                const scrollAmount = scroller.clientWidth * 0.8;
-                scroller.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            });
-        }
-        
-        // --- Automatic scrolling function for mobile ---
-        const startAutoScroll = () => {
-             // Use matchMedia to check if the view is mobile (arrows are not displayed)
-            const isMobile = window.matchMedia('(max-width: 1023px)').matches;
-            if (!isMobile || cards.length <= 1) return; // Exit if not mobile or not enough cards
-
-            // Clear any previously running interval for this scroller
-            clearInterval(autoScrollIntervals[containerId]); 
+            const leftArrow = document.querySelector(`.scroll-arrow.left-arrow[data-container="${containerId}"]`);
+            const rightArrow = document.querySelector(`.scroll-arrow.right-arrow[data-container="${containerId}"]`);
             
-            autoScrollIntervals[containerId] = setInterval(() => {
-                // Move to the next card index
-                currentIndex = (currentIndex + 1) % cards.length;
-                
-                const nextCard = cards[currentIndex];
-                
-                // If we've looped back to the first card, scroll instantly to the start
-                if (currentIndex === 0) {
-                    scroller.scrollTo({ left: 0, behavior: 'smooth' });
-                } else {
-                    // Otherwise, scroll to the next card's position
-                    scroller.scrollTo({
-                        left: nextCard.offsetLeft - 24, // Adjust for the gap
-                        behavior: 'smooth'
-                    });
-                }
-            }, 3500); // Change slide every 3.5 seconds
-        };
-        
-        const stopAutoScroll = () => {
-            clearInterval(autoScrollIntervals[containerId]);
-        };
-
-        // --- Event Listeners to manage auto-scroll ---
-        // Start the automatic scrolling when the page loads
-        startAutoScroll();
-
-        // Pause the scrolling when the user touches or hovers over the container
-        scroller.addEventListener('touchstart', stopAutoScroll, { passive: true });
-        scroller.addEventListener('mouseenter', stopAutoScroll);
-
-        // Resume scrolling after a delay when the user stops interacting
-        scroller.addEventListener('touchend', () => setTimeout(startAutoScroll, 5000)); // 5-second delay after touch
-        scroller.addEventListener('mouseleave', startAutoScroll);
-
-        // Re-evaluate whether to auto-scroll when the window is resized
-        window.addEventListener('resize', () => {
-            stopAutoScroll();
+            if (leftArrow && rightArrow) {
+                leftArrow.addEventListener('click', () => scroller.scrollBy({ left: scroller.clientWidth * -0.8, behavior: 'smooth' }));
+                rightArrow.addEventListener('click', () => scroller.scrollBy({ left: scroller.clientWidth * 0.8, behavior: 'smooth' }));
+            }
+            
+            const cards = scroller.querySelectorAll('.hostel-card, .entity-card, .category-card');
+            let currentIndex = 0;
+            const startAutoScroll = () => {
+                const isMobile = window.matchMedia('(max-width: 1023px)').matches;
+                if (!isMobile || cards.length <= 1) return;
+                clearInterval(autoScrollIntervals[containerId]); 
+                autoScrollIntervals[containerId] = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % cards.length;
+                    const nextCard = cards[currentIndex];
+                    if (currentIndex === 0) {
+                        scroller.scrollTo({ left: 0, behavior: 'smooth' });
+                    } else {
+                        scroller.scrollTo({ left: nextCard.offsetLeft - 16, behavior: 'smooth' });
+                    }
+                }, 3500);
+            };
+            const stopAutoScroll = () => clearInterval(autoScrollIntervals[containerId]);
             startAutoScroll();
-        });
-    });
-};
-
-// Make sure this function call is inside your DOMContentLoaded listener
-setupHorizontalScrollers();
-
-/**
- * Fetches blog posts and user data from a placeholder API and displays them.
- */
-const fetchAndDisplayBlogPosts = async () => {
-    const grid = document.getElementById('blog-posts-grid');
-    const loader = document.getElementById('blog-loader');
-    const errorMessage = document.getElementById('blog-error-message');
-    
-    // API endpoints for placeholder data
-    const postsUrl = 'https://jsonplaceholder.typicode.com/posts';
-    const usersUrl = 'https://jsonplaceholder.typicode.com/users';
-
-    try {
-        // Fetch posts and users data in parallel
-        const [postsResponse, usersResponse] = await Promise.all([
-            fetch(postsUrl),
-            fetch(usersUrl)
-        ]);
-
-        if (!postsResponse.ok || !usersResponse.ok) {
-            throw new Error('Network response was not ok.');
-        }
-
-        const posts = await postsResponse.json();
-        const users = await usersResponse.json();
-
-        // Create a map of users by their ID for easy lookup
-        const usersMap = new Map(users.map(user => [user.id, user.name]));
-        
-        // Mock categories and colors
-        const categories = [
-            { name: 'Student Guides', color: 'teal' },
-            { name: 'Accommodation', color: 'indigo' },
-            { name: 'Exam Prep', color: 'amber' },
-            { name: 'City Life', color: 'sky' }
-        ];
-
-        // We'll only show the first 6 posts for this demo
-        const postsToDisplay = posts.slice(0, 6);
-
-        postsToDisplay.forEach((post, index) => {
-            const authorName = usersMap.get(post.userId) || 'Anonymous';
-            const category = categories[index % categories.length];
-            const readTime = Math.floor(post.body.length / 1500) + 3; // Estimate read time
-            const postDate = new Date();
-            postDate.setDate(postDate.getDate() - (index * 3)); // Simulate different post dates
-
-            const postCardHTML = `
-                <article class="blog-card">
-                    <div class="flex-shrink-0">
-                        <img class="h-48 w-full object-cover" src="https://placehold.co/600x400/${category.color}-100/${category.color}-800?text=${category.name.replace(' ', '+')}" alt="Blog post image">
-                    </div>
-                    <div class="flex flex-1 flex-col justify-between bg-white p-6">
-                        <div class="flex-1">
-                            <p class="text-sm font-medium text-${category.color}-600">
-                                <a href="#" class="hover:underline">${category.name}</a>
-                            </p>
-                            <a href="#" class="mt-2 block">
-                                <p class="text-xl font-semibold text-slate-900 capitalize">${post.title.substring(0, 50)}</p>
-                                <p class="mt-3 text-base text-slate-500">${post.body.substring(0, 120)}...</p>
-                            </a>
-                        </div>
-                        <div class="mt-6 flex items-center">
-                            <div class="flex-shrink-0">
-                                <a href="#">
-                                    <span class="sr-only">${authorName}</span>
-                                    <img class="h-10 w-10 rounded-full bg-gray-200" src="https://placehold.co/40x40/cbd5e1/475569?text=${authorName.charAt(0)}" alt="Author avatar">
-                                </a>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-slate-900">
-                                    <a href="#" class="hover:underline">${authorName}</a>
-                                </p>
-                                <div class="flex space-x-1 text-sm text-slate-500">
-                                    <time datetime="${postDate.toISOString().split('T')[0]}">${postDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
-                                    <span aria-hidden="true">&middot;</span>
-                                    <span>${readTime} min read</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-            `;
-            grid.innerHTML += postCardHTML;
-        });
-
-        // Hide loader and show grid
-        loader.classList.add('hidden');
-        grid.classList.remove('hidden');
-
-    } catch (error) {
-        console.error('Failed to fetch blog posts:', error);
-        // Hide loader and show error message
-        loader.classList.add('hidden');
-        errorMessage.classList.remove('hidden');
-    }
-};
-
-// Call the function to fetch and display the blog posts
-fetchAndDisplayBlogPosts();
-
-/**
- * Handles the accordion functionality for the FAQ section.
- */
-const setupFaqAccordion = () => {
-    const accordionContainer = document.getElementById('faq-accordion-container');
-    if (!accordionContainer) return;
-
-    const faqItems = accordionContainer.querySelectorAll('.faq-item');
-
-    faqItems.forEach(item => {
-        const button = item.querySelector('.faq-question-button');
-        const answer = item.querySelector('.faq-answer');
-        const chevron = item.querySelector('.faq-chevron');
-
-        button.addEventListener('click', () => {
-            const isOpening = answer.classList.contains('hidden');
-
-            // Close all other open items first
-            faqItems.forEach(otherItem => {
-                if (otherItem !== item) {
-                    otherItem.querySelector('.faq-answer').classList.add('hidden');
-                    otherItem.querySelector('.faq-answer').style.maxHeight = null;
-                    otherItem.querySelector('.faq-chevron').classList.remove('faq-chevron-rotated');
-                }
+            scroller.addEventListener('touchstart', stopAutoScroll, { passive: true });
+            scroller.addEventListener('mouseenter', stopAutoScroll);
+            scroller.addEventListener('touchend', () => setTimeout(startAutoScroll, 5000));
+            scroller.addEventListener('mouseleave', startAutoScroll);
+            window.addEventListener('resize', () => {
+                stopAutoScroll();
+                startAutoScroll();
             });
+        });
+    };
 
-            // Toggle the clicked item
-            if (isOpening) {
-                answer.classList.remove('hidden');
-                answer.style.maxHeight = answer.scrollHeight + 'px';
-                chevron.classList.add('faq-chevron-rotated');
-            } else {
-                answer.style.maxHeight = null;
-                // Add a listener to hide it after the transition completes
-                answer.addEventListener('transitionend', () => {
-                    answer.classList.add('hidden');
-                }, { once: true });
-                chevron.classList.remove('faq-chevron-rotated');
+    /**
+     * Sets up functionality for individual hostel cards, including sliders and room tabs.
+     */
+    const setupHostelCards = () => {
+        const hostelCards = document.querySelectorAll('.hostel-card');
+        hostelCards.forEach(card => {
+            const slider = card.querySelector('.slider');
+            if (slider) {
+                const slides = card.querySelectorAll('.slide');
+                const prevBtn = card.querySelector('.prev-btn');
+                const nextBtn = card.querySelector('.next-btn');
+                if (!slides.length || !prevBtn || !nextBtn) return;
+                let currentIndex = 0;
+                const updateSlider = () => slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+                prevBtn.addEventListener('click', () => { currentIndex = (currentIndex > 0) ? currentIndex - 1 : slides.length - 1; updateSlider(); });
+                nextBtn.addEventListener('click', () => { currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0; updateSlider(); });
+                updateSlider();
+            }
+
+            const roomTabs = card.querySelectorAll('.room-tab');
+            const roomPanes = card.querySelectorAll('.room-pane');
+            if (roomTabs.length > 0) {
+                roomTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const targetPaneId = tab.dataset.room;
+                        const targetPane = card.querySelector(`#${targetPaneId}`);
+                        roomTabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        roomPanes.forEach(pane => pane.classList.remove('active'));
+                        if (targetPane) targetPane.classList.add('active');
+                    });
+                });
             }
         });
-    });
-};
+    };
 
-// Call the new function to initialize the FAQ section
-setupFaqAccordion();
+    /**
+     * Sets up the pop-up modal for amenities.
+     */
+    const setupAmenitiesModal = () => {
+        const modal = document.getElementById('amenities-modal');
+        if (!modal) return;
+        const openModalBtns = document.querySelectorAll('.amenity-more-btn');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const openModal = () => modal.classList.add('show');
+        const closeModal = () => modal.classList.remove('show');
+        openModalBtns.forEach(btn => btn.addEventListener('click', openModal));
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+        document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && modal.classList.contains('show')) closeModal(); });
+    };
+    
+    /**
+     * Fetches blog posts from a placeholder API and displays them.
+     */
+    const fetchAndDisplayBlogPosts = async () => {
+        const grid = document.getElementById('blog-posts-grid');
+        const loader = document.getElementById('blog-loader');
+        const errorMessage = document.getElementById('blog-error-message');
+        if (!grid || !loader || !errorMessage) return;
 
+        const postsUrl = 'https://jsonplaceholder.typicode.com/posts';
+        const usersUrl = 'https://jsonplaceholder.typicode.com/users';
 
-    // Initialize all components
+        try {
+            const [postsResponse, usersResponse] = await Promise.all([fetch(postsUrl), fetch(usersUrl)]);
+            if (!postsResponse.ok || !usersResponse.ok) throw new Error('Network response was not ok.');
+            const posts = await postsResponse.json();
+            const users = await usersResponse.json();
+            const usersMap = new Map(users.map(user => [user.id, user.name]));
+            const categories = [
+                { name: 'Student Guides', color: 'teal' }, { name: 'Accommodation', color: 'indigo' },
+                { name: 'Exam Prep', color: 'amber' }, { name: 'City Life', color: 'sky' }
+            ];
+            grid.innerHTML = posts.slice(0, 6).map((post, index) => {
+                const authorName = usersMap.get(post.userId) || 'Anonymous';
+                const category = categories[index % categories.length];
+                const readTime = Math.floor(post.body.length / 1500) + 3;
+                const postDate = new Date();
+                postDate.setDate(postDate.getDate() - (index * 3));
+                return `<article class="blog-card"><div class="flex-shrink-0"><img class="h-48 w-full object-cover" src="https://placehold.co/600x400/${category.color}-100/${category.color}-800?text=${category.name.replace(' ', '+')}" alt=""></div><div class="flex flex-1 flex-col justify-between bg-white p-6"><div class="flex-1"><p class="text-sm font-medium text-${category.color}-600"><a href="#" class="hover:underline">${category.name}</a></p><a href="#" class="mt-2 block"><p class="text-xl font-semibold text-slate-900 capitalize">${post.title.substring(0, 50)}</p><p class="mt-3 text-base text-slate-500">${post.body.substring(0, 120)}...</p></a></div><div class="mt-6 flex items-center"><div class="flex-shrink-0"><a href="#"><img class="h-10 w-10 rounded-full bg-gray-200" src="https://placehold.co/40x40/cbd5e1/475569?text=${authorName.charAt(0)}" alt=""></a></div><div class="ml-3"><p class="text-sm font-medium text-slate-900"><a href="#" class="hover:underline">${authorName}</a></p><div class="flex space-x-1 text-sm text-slate-500"><time datetime="${postDate.toISOString().split('T')[0]}">${postDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time><span>&middot;</span><span>${readTime} min read</span></div></div></div></div></article>`;
+            }).join('');
+            loader.classList.add('hidden');
+            grid.classList.remove('hidden');
+        } catch (error) {
+            console.error('Failed to fetch blog posts:', error);
+            loader.classList.add('hidden');
+            errorMessage.classList.remove('hidden');
+        }
+    };
+
+    /**
+     * Handles the accordion functionality for the FAQ section.
+     */
+    const setupFaqAccordion = () => {
+        const accordionContainer = document.getElementById('faq-accordion-container');
+        if (!accordionContainer) return;
+        const faqItems = accordionContainer.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const button = item.querySelector('.faq-question-button');
+            if (!button) return;
+            button.addEventListener('click', () => {
+                const answer = item.querySelector('.faq-answer');
+                const chevron = item.querySelector('.faq-chevron');
+                const isOpening = answer.classList.contains('hidden');
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        const otherAnswer = otherItem.querySelector('.faq-answer');
+                        otherAnswer.classList.add('hidden');
+                        otherAnswer.style.maxHeight = null;
+                        otherItem.querySelector('.faq-chevron').classList.remove('faq-chevron-rotated');
+                    }
+                });
+                if (isOpening) {
+                    answer.classList.remove('hidden');
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                    chevron.classList.add('faq-chevron-rotated');
+                } else {
+                    answer.style.maxHeight = null;
+                    answer.addEventListener('transitionend', () => answer.classList.add('hidden'), { once: true });
+                    chevron.classList.remove('faq-chevron-rotated');
+                }
+            });
+        });
+    };
+
+    // --- INITIALIZE ALL COMPONENTS ON PAGE LOAD ---
     setupMobileMenu();
     setupMobileAccordion();
     setupDesktopDropdowns();
     setupNavbarSearch();
     setupSlider();
-     setupCategoryScroller(); 
-     
+    setupHorizontalScrollers();
+    setupHostelCards();
+    setupAmenitiesModal();
+    fetchAndDisplayBlogPosts();
+    setupFaqAccordion();
 });
-
