@@ -185,31 +185,30 @@ body {
     transform: scale(1.1);
 }
 
-/* --- CATEGORY CARDS: GRID LAYOUT FOR ALL SCREENS (MODIFIED) --- */
+/* --- CATEGORY CARDS: SCROLLER & GRID --- */
+
+/* Mobile First: Horizontal scroller */
+/* --- CATEGORY CARDS: SCROLLER & GRID --- */
+
+/* --- CATEGORY CARDS: HORIZONTAL ROW LAYOUT --- */
+
+/* This will apply to all screen sizes */
 .category-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columns on all screens */
-  gap: 1rem; /* Default gap for mobile */
+    display: flex; /* Aligns children (the cards) in a row */
+    justify-content: space-between; /* Distributes space between cards */
+    gap: 0.75rem; /* Creates a small gap between the cards (you can adjust this) */
 }
 
-/* Increase the gap on larger screens */
-@media (min-width: 640px) {
-    .category-container {
-        gap: 1.5rem;
-    }
+/* This makes sure each card takes up an equal amount of space in the row */
+.category-container > .category-card {
+   flex: 1; 
 }
 
-@media (min-width: 1024px) {
-    .category-container {
-        gap: 2rem;
-    }
-}
 
 /* --- INDIVIDUAL CARD STYLES --- */
 .category-card {
     background-color: white;
     border-radius: 0.75rem; /* rounded-lg */
-    padding: 2rem; /* p-8 */
     text-align: center;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -219,16 +218,13 @@ body {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 .card-icon {
-    margin: 0 auto 1.5rem auto; /* mx-auto mb-6 */
-    width: 4rem; /* w-16 */
-    height: 4rem; /* h-16 */
+    margin: 0 auto 0.75rem auto; /* mx-auto mb-3 */
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .card-title {
-    font-size: 1.25rem; /* text-xl */
     font-weight: 700; /* font-bold */
     color: #111827; /* text-gray-900 */
 }
